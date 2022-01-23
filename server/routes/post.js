@@ -8,11 +8,14 @@ const requireLogin = require("../middleware/requireLogin");
 
 router.get("/allposts", requireLogin, (req, res) => {
   Post.find()
-    .populate("postedBy", "_id,name")
+    .populate("postedBy", "id")
+    .populate("postedBy", "name")
     .then((posts) => {
-      res.json({ posts }).catch((error) => {
-        console.log(error);
-      });
+      res.json({ posts });
+      console.log({ posts });
+    })
+    .catch((error) => {
+      console.log(error);
     });
 });
 

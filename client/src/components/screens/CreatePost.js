@@ -3,47 +3,46 @@ import M from "materialize-css";
 import { useHistory } from "react-router-dom";
 
 const CreatePost = () => {
-  const history = useHistory;
+  const history = useHistory();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
-  useEffect(
-    () => {
-      if (url) {
-        fetch("/createpost", {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer" + localStorage.getItem("jwt"),
-          },
-          body: JSON.stringify({
-            title,
-            body,
-            pic: url,
-          }),
+  useEffect(() => {
+    //console.log(title);
+    console.log(url + "2");
+    if (url) {
+      fetch("/createpost", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer" + localStorage.getItem("jwt"),
+        },
+        body: JSON.stringify({
+          title,
+          body,
+          pic: url,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.error) {
+            M.toast({ html: data.error, classes: "#d32f2f red darken-2" });
+            return;
+          } else {
+            M.toast({
+              html: "successfully posted",
+              classes: "#43a047 green darken-1",
+            });
+            history.push("/");
+          }
         })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-            if (data.error) {
-              M.toast({ html: data.error, classes: "#d32f2f red darken-2" });
-              return;
-            } else {
-              M.toast({
-                html: "successfully posted",
-                classes: "#43a047 green darken-1",
-              });
-              history.push("/");
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-    },
-    { url }
-  );
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [url]);
 
   const postDetails = () => {
     const data = new FormData();
@@ -56,6 +55,8 @@ const CreatePost = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        //console.log(url);
+        console.log(data.url);
         setUrl(data.url);
       })
       .catch((err) => {

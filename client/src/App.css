@@ -30,10 +30,16 @@ h5 {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  padding-bottom: 5%;
 }
 
 .item {
-  width: 30%;
+  width: 32%;
+}
+
+.home {
+  padding-top: 5%;
+  padding-bottom: 5%;
 }
 
 .home-card {
